@@ -2,6 +2,11 @@
 
 import sys
 from random import choice
+import discord
+import os
+
+
+
 
 
 def open_and_read_file(filenames):
@@ -51,7 +56,9 @@ def make_text(chains):
         word = choice(chains[key])
         words.append(word)
         key = (key[1], word)
-
+        if len(words)> 20
+            break
+        
     return ' '.join(words)
 
 
@@ -64,3 +71,41 @@ text = open_and_read_file(filenames)
 
 # Get a Markov chain
 chains = make_chains(text)
+
+client = discord.Client()
+token = os.environ.get("DISCORD_TOKEN")
+
+@client.event
+# async def on_ready():
+#     print(f'Successfully connected! Logged in as {client.user}.')
+
+
+@client.event
+async def on_ready():
+    print(f'Successfully connected! Logged in as {client.user}.')
+
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+
+    if message.content:
+        await message.channel.send(make_text(chains))
+
+# async def on_ready():
+#     if message.author == client.user:
+#         return 
+
+# async def on_message(message):
+#     if message.author == client.user:
+#         return
+
+    # if message.content.startswith('$hello'):
+    #     await message.channel.send('Hello!')
+       
+
+
+
+
+client.run(token)
